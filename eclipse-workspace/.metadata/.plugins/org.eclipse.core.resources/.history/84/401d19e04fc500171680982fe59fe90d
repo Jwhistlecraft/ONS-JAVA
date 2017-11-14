@@ -1,0 +1,182 @@
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.CheckboxGroup;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Random;
+
+import javafx.scene.control.CheckBox;
+
+import java.sql.*;
+import com.mysql.*;
+
+public class ViewAccounts {
+
+	TextField SpecificAccount;
+	Button Find;
+	Checkbox Current;
+	Checkbox Savings;
+	Checkbox Male;
+	Checkbox Female;
+
+	Connection C;
+	Statement ServerQ;
+
+	public ViewAccounts() {
+
+		Frame HomeFrame = new Frame("View Accounts");
+		Panel North = new Panel();
+		Panel Middle = new Panel();
+		Panel South = new Panel();
+
+		CheckboxGroup IngGrp = new CheckboxGroup();
+		CheckboxGroup IngGrp2 = new CheckboxGroup();
+
+		SpecificAccount = new TextField(20);
+		Find = new Button("Find");
+		Current = new Checkbox("Current", IngGrp, true);
+		Savings = new Checkbox("Savings", IngGrp, true);
+		Male = new Checkbox("Male", IngGrp2, true);
+		Female = new Checkbox("Female", IngGrp2, true);
+
+		Label Specific_AccountL = new Label("Specific Account : ");
+		Label Account_TypeL = new Label("Account Type : ");
+		Label Empty = new Label("");
+		Label GenderL = new Label("Gender");
+
+		HomeFrame.setLayout(new GridLayout(3, 1));
+		HomeFrame.add(North);
+		Middle.setLayout(new GridLayout(2, 2));
+		HomeFrame.add(Middle);
+		Middle.setLayout(new GridLayout(3, 2));
+		HomeFrame.add(South);
+
+		North.add(Specific_AccountL);
+		North.add(SpecificAccount);
+
+		Middle.add(Account_TypeL);
+		Middle.add(GenderL);
+		Middle.add(Current);
+		Middle.add(Male);
+		Middle.add(Savings);
+		Middle.add(Female);
+
+		South.add(Find);
+
+		HomeFrame.setSize(300, 300);
+		HomeFrame.setVisible(true);
+
+		HomeFrame.addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				HomeFrame.setVisible(false);
+			}
+		});
+
+		Find.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+
+				String SearchParam = "";
+
+				try {
+
+					if (SpecificAccount.getText() != null) {
+
+						SearchParam = SpecificAccount.getText();
+
+						ServerQ = DataBaseAccess.ServerConnection.createStatement();
+						String SpecificFinder = "select * from Accounts where AccNo = '" + SearchParam + "'";
+
+						ResultSet AccountFound = ServerQ.executeQuery(SpecificFinder);
+
+						if (AccountFound.next()) {
+
+							System.out.println(AccountFound.getString("AccNo") + AccountFound.getString("Name")
+									+ AccountFound.getString("Address"));
+
+							String AccountAccNo = AccountFound.getString("AccNo");
+							String AccountName = AccountFound.getString("Name");
+							String AccountAddress = AccountFound.getString("Address");
+
+							String[] columnNames = { "AccNo", "Name", "Address" };
+							Object[][] AccountInfo = { { AccountAccNo, AccountName, AccountAddress } };
+							System.out.println(AccountInfo[0][1]);
+							DataTable newTable = new DataTable(AccountInfo, columnNames);
+							
+						}
+					} 
+					
+					else if (SpecificAccount.getText() == null) {
+						if (Current.getState()) {
+							if (Male.getState()) {
+							SearchParam = "CM";
+							}
+							if (Female.getState()) {
+							SearchParam = "CF";
+							}
+						}
+						if (Savings.getState()) {
+							if (Male.getState()) {
+							SearchParam = "SM";
+							}
+							if (Female.getState()) {
+							SearchParam = "SF";
+							}
+						}
+											
+						
+						ServerQ = DataBaseAccess.ServerConnection.createStatement();
+						String SpecificFinder = "select * from Accounts where substring('AccNo', 1,2) = '" + SearchParam + "'";
+						
+						System.out.println(SpecificFinder);
+						
+						ResultSet AccountFound = ServerQ.executeQuery(SpecificFinder);
+							
+						while (AccountFound.next()) {
+							
+							System.out.println(AccountFound.getString("AccNo") + AccountFound.getString("Name")
+							+ AccountFound.getString("Address"));
+
+							String AccountAccNo = AccountFound.getString("AccNo");
+							String AccountName = AccountFound.getString("Name");
+							String AccountAddress = AccountFound.getString("Address");
+
+							String[] columnNames = { "AccNo", "Name", "Address" };
+							Object[][] AccountInfo = { { AccountAccNo, AccountName, AccountAddress } };
+							System.out.println(AccountInfo[0][1]);
+							DataTable newTable = new DataTable(AccountInfo, columnNames);					
+											
+					
+						}
+					
+					}
+												
+					else {
+						System.out.println("please enter a Account Number");
+					}
+
+				}
+
+				catch (Exception T) {
+					System.out.println(T);
+				}
+
+			}
+
+		});
+
+	}
+
+}

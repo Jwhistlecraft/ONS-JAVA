@@ -1,0 +1,91 @@
+import java.awt.Button;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Balance {
+
+	TextField AccountNumber, CurrentBalance;
+	Button Find;
+	Connection C;
+	Statement ServerQ;
+
+	public Balance() {
+
+		Frame HomeFrame = new Frame("Account Balnce");
+		Panel North = new Panel();
+		Panel South = new Panel();
+
+		AccountNumber = new TextField(20);
+		CurrentBalance = new TextField(20);
+		Find = new Button("Find");
+
+		Label Account_Number = new Label("Enter Acount Number");
+		Label Current_Balance = new Label("Current Balance");
+
+		HomeFrame.setLayout(new GridLayout(2, 1));
+		HomeFrame.add(North);
+		HomeFrame.add(South);
+
+		North.add(Account_Number);
+		North.add(AccountNumber);
+		North.add(Find);
+		South.add(Current_Balance);
+		South.add(CurrentBalance);
+
+		HomeFrame.setSize(400, 200);
+		HomeFrame.setVisible(true);
+
+		HomeFrame.addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				HomeFrame.setVisible(false);
+			}
+		}
+
+		);
+
+		Find.addActionListener(
+
+				new ActionListener() {
+
+					public void actionPerformed(ActionEvent e) {
+
+						try {
+
+							ServerQ = DataBaseAccess.ServerConnection.createStatement();
+
+							String AccountNo = AccountNumber.getText();
+							String BalanceFinder = "select StartingBalance from accounts where AccNo = '" + AccountNo
+									+ "'";
+
+							ResultSet currentBalance = ServerQ.executeQuery(BalanceFinder);
+							
+							
+
+							if (AccountNumber.getText() != null) {
+								String finalBalance = currentBalance.getString("StartingBalance");
+								
+								CurrentBalance.setText(finalBalance);
+							}
+
+						} catch (Exception T) {
+							System.out.println(T);
+						}
+
+					}
+				}
+
+		);
+
+	}
+}

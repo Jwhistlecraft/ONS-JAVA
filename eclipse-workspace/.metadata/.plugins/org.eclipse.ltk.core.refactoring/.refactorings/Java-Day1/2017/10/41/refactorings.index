@@ -1,0 +1,14 @@
+1507885340277	Delete element
+1507885369384	Delete element
+1507887257041	Infer generic type arguments
+1507887279747	Move compilation unit
+1507887301342	Rename type 'ifStatements'
+1507887350266	Rename package 'Results'
+1507895676289	Rename type 'Results'
+1507905120154	Rename type 'ThirdResults'
+1507905328648	Rename compilation unit 'ThirdPrivateResults.java'
+1507905355663	Rename type 'FirstResults'
+1507905384679	Rename type 'SecondResults'
+1507906762778	Rename type 'NestedIfsResults'
+1507906770651	Rename type 'CounterResults'
+1507906778631	Rename type 'PrivateResults'

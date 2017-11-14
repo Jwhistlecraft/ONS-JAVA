@@ -1,0 +1,49 @@
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.*;
+
+public class DataTable {
+
+	public DataTable(Object[][] accountInfo, String[] columnNames) {
+
+		System.out.println(accountInfo.length);
+		Frame DataFrame = new Frame("View Accounts");
+		JTable table = new JTable(accountInfo,columnNames);
+		JScrollPane ScrollPane = new JScrollPane(table);
+		TableColumn column = null;
+		for (int i = 0; i < 3; i++) {
+		    column = table.getColumnModel().getColumn(i);
+		    if (i == 2) {
+		        column.setPreferredWidth(100); //third column is bigger
+		    } else {
+		        column.setPreferredWidth(50);
+		    }
+		}
+	
+		table.setFillsViewportHeight(true);
+
+		DataFrame.setLayout(new BorderLayout());
+		DataFrame.add(table.getTableHeader(), BorderLayout.PAGE_START);
+		DataFrame.add(table, BorderLayout.CENTER);
+		DataFrame.add(ScrollPane);
+		DataFrame.setSize(600, 600);
+		DataFrame.setVisible(true);
+		
+		
+		DataFrame.addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				DataFrame.setVisible(false);
+			}
+		}
+
+		);
+
+	}
+
+}

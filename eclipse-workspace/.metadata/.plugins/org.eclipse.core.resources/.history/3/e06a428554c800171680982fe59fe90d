@@ -1,0 +1,21 @@
+import java.sql.ResultSet;
+
+public class tester {
+	ResultSet AccountFound = ServerQ.executeQuery(SpecificFinder);
+	String[] columnNames = { "AccNo", "Name", "Address" };
+	String AccountAccNo = AccountFound.getString("AccNo");
+	String AccountName = AccountFound.getString("Name");
+	String AccountAddress = AccountFound.getString("Address");
+
+	Object[] AccountInfo = {
+	AccountAccNo,AccountName,AccountAddress};
+	}
+	ArrayList<AccountInfo> accountArray = new ArrayList();
+	 
+	while (AccountFound.next()) {
+
+	accountArray.add(AccountInfo);
+
+	DataTable newTable = new DataTable(accountArray, columnNames);
+	}​​
+}

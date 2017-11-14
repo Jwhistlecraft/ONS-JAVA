@@ -1,0 +1,22 @@
+import java.awt.Frame;
+
+import javax.swing.JTable;
+import javax.swing.table.*;
+
+public class DataTable {
+	
+	public DataTable() {
+		
+		Frame HomeFrame = new Frame("View Accounts");
+		JTable table = new JTable();
+		
+		HomeFrame.setSize(400,400);
+		HomeFrame.setVisible(true);
+		HomeFrame.add(table);
+		
+	}
+	
+		
+
+
+}
