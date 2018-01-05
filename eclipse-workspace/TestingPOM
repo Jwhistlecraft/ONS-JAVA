@@ -1,0 +1,67 @@
+package GuruTest;
+
+import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+
+import GuruTest.GuruLogin;
+
+public class POMGuru {
+	
+private WebDriver driver;
+	
+	@Before
+	public void setUp() {
+		driver = new ChromeDriver();
+	}
+	
+	@After
+	public void tearDown() {
+		driver.quit();
+	}
+	
+	@Test
+	public void pomExampleTest() {
+		driver.navigate().to("http://www.demo.guru99.com/v4/");
+		GuruLogin loginTest = PageFactory.initElements(driver, GuruLogin.class);
+		
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		loginTest.enterUserName();
+		
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		loginTest.enterPassword();
+		
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		loginTest.clickLoginButton();		
+		
+		String expected = "http://www.demo.guru99.com/v4/manager/Managerhomepage.php";
+		String actual = driver.getCurrentUrl();
+		
+		Assert.assertEquals("Not the expected URL", expected, actual);	
+	}
+
+}
